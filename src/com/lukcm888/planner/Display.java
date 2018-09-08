@@ -1,22 +1,33 @@
 package com.lukcm888.planner;
 
+import java.io.IOException;
+
+import com.lukcm888.dataaccess.GetPropValues;
+import com.lukcm888.dataaccess.InsertHours;
+
 import javafx.application.Application;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
+import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
 public class Display extends Application {
 
     private Stage window;
+    private final Text actiontarget  = new Text();;
     private static Button b1;
     private static Button submitButton;
+    private static GridPane g;
     
     private static final String TASK = "Task";
     private static final String MONDAY = "Monday";
@@ -43,6 +54,7 @@ public class Display extends Application {
     private static GreenActivity g5;
     
     private static TableView<GreenActivity> table;
+    private static GetPropValues getPropValues;
     
    
     public static void main(String[] args) {
@@ -115,14 +127,36 @@ public class Display extends Application {
         b1 = new Button();
         b1.setText("get new tasks");
         
+        
+        
 	    submitButton = new Button();
 	    submitButton.setText("Submit");
-        
+	    submitButton.setOnAction(new EventHandler<ActionEvent> (){
+	    		@Override
+	        public void handle(ActionEvent e) {
+	    			String textData = g1.getMondayHourLogger().getText();
+	            actiontarget.setFill(Color.FIREBRICK);
+	            actiontarget.setText(textData);
+	            System.out.println(g1.getMondayHourLogger().getText());
+	            getPropValues =new GetPropValues();
+	            try {
+					System.out.println(getPropValues.getUserName());
+					System.out.println(getPropValues.getPassword());
+				} catch (IOException e1) {
+					// TODO Auto-generated catch block
+					e1.printStackTrace();
+				}
+
+	        }
+	    });
+	    
+
 
         
         BorderPane borderpane = new BorderPane();
         borderpane.setCenter(table);
         borderpane.setLeft(b1);
+        
         borderpane.setBottom(submitButton);
          
         
@@ -131,6 +165,11 @@ public class Display extends Application {
         window.setScene(scene);
         window.show();
     }
+    
+    
+    
+    
+    
     
     //  Loads in data (usually gets data from csv or data on internet
     public ObservableList<GreenActivity> getActivity() {

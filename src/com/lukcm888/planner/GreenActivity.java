@@ -44,10 +44,7 @@ public class GreenActivity implements ActivityObject {
         saturdayHourLogger.setPromptText("0");
         
         sundayHourLogger = new TextField();
-        sundayHourLogger.setPromptText("0");
-
-
-		
+        sundayHourLogger.setPromptText("0");		
 		
 	}
 	
