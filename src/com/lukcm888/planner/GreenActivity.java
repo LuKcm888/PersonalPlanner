@@ -2,11 +2,14 @@ package com.lukcm888.planner;
 
 import javafx.scene.control.TextField;
 
+import java.util.ArrayList;
+
 public class GreenActivity implements ActivityObject {
 
 	private String name ="";
 	private int hours = 0;
 	private String category ="";
+	private ArrayList <String> weeklyHoursList = null;
 	
 	
 	private TextField mondayHourLogger;
@@ -24,6 +27,7 @@ public class GreenActivity implements ActivityObject {
 		this.name = name;
 		this.hours = hours;
 		this.category = category;
+		weeklyHoursList = new ArrayList<String>();
 		
 		mondayHourLogger = new TextField();
 		mondayHourLogger.setPromptText("0");
@@ -55,6 +59,7 @@ public class GreenActivity implements ActivityObject {
 		this.name = name;
 		this.hours = hours;
 		this.category = category;
+        weeklyHoursList = new ArrayList<String>();
 		this.mondayHourLogger = mondayHourLogger;
 		this.tuesdayHourLogger = tuesdayHourLogger;
 		this.wednesdayHourLogger = tuesdayHourLogger;
@@ -88,6 +93,26 @@ public class GreenActivity implements ActivityObject {
 
 	public void setCategory(String category) {
 		this.category = category;
+	}
+
+	public ArrayList <String> getWeeklyHoursList() { return weeklyHoursList;}
+
+    public void setWeeklyHoursList(ArrayList <String> weeklyHoursList ) {
+
+	    this.weeklyHoursList = weeklyHoursList;
+
+	}
+
+	public void loadWeeklyHours() {
+
+	    weeklyHoursList.add(this.getMondayHourLogger().getText());
+        weeklyHoursList.add( this.getTuesdayHourLogger().getText());
+        weeklyHoursList.add(this.getWednesdayHourLogger().getText());
+        weeklyHoursList.add(this.getThursdayHourLogger().getText());
+        weeklyHoursList.add(this.getFridayHourLogger().getText());
+        weeklyHoursList.add(this.getSaturdayHourLogger().getText());
+        weeklyHoursList.add(this.getSundayHourLogger().getText());
+
 	}
 	
 	
@@ -158,6 +183,19 @@ public class GreenActivity implements ActivityObject {
 		// TODO Auto-generated method stub
 		
 	}
+
+    @Override
+    public int sumHours(ArrayList <String> weeklyHoursList) {
+	    int totalHours = 0;
+	    for (String hour: weeklyHoursList) {
+
+	       totalHours += Integer.parseInt(hour);
+        }
+
+        return totalHours;
+
+    }
+
 
 	
 }

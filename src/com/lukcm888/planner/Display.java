@@ -2,8 +2,8 @@ package com.lukcm888.planner;
 
 import java.io.IOException;
 
+import com.lukcm888.Util.ApplicationUtilities;
 import com.lukcm888.dataaccess.GetPropValues;
-import com.lukcm888.dataaccess.InsertHours;
 
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -17,7 +17,6 @@ import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.paint.Color;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
 
@@ -48,10 +47,6 @@ public class Display extends Application {
     private static final String SUNDAY_HOUR_LOGGER = "sundayHourLogger";
     
     private static GreenActivity g1;
-    private static GreenActivity g2;
-    private static GreenActivity g3;
-    private static GreenActivity g4;
-    private static GreenActivity g5;
     
     private static TableView<GreenActivity> table;
     private static GetPropValues getPropValues;
@@ -101,7 +96,7 @@ public class Display extends Application {
         saturdayColumn.setMinWidth(200);
         saturdayColumn.setCellValueFactory(new PropertyValueFactory<>(SATURDAY_HOUR_LOGGER ));
         
-        	//  Sunday Column
+        //  Sunday Column
         TableColumn<GreenActivity, String> sundayColumn = new TableColumn<GreenActivity, String>(SUNDAY);
         sundayColumn.setMinWidth(200);
         sundayColumn.setCellValueFactory(new PropertyValueFactory<>(SUNDAY_HOUR_LOGGER));
@@ -110,15 +105,13 @@ public class Display extends Application {
         TableColumn<GreenActivity, String> totalHoursColumn = new TableColumn<GreenActivity, String>(TOTALHOURS);
         totalHoursColumn.setMinWidth(200);
         totalHoursColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+
         
         // instanite textfields
         
         table = new TableView<>();
         table.setItems(getActivity());
-        
-       
-        
-        
+
         
         table.getColumns().addAll(taskColumn ,mondayColumn, tuesdayColumn, wednesdayColumn, thursdayColumn, 
         		fridayColumn, saturdayColumn, sundayColumn);
@@ -126,19 +119,32 @@ public class Display extends Application {
      
         b1 = new Button();
         b1.setText("get new tasks");
-        
-        
+
         
 	    submitButton = new Button();
 	    submitButton.setText("Submit");
 	    submitButton.setOnAction(new EventHandler<ActionEvent> (){
 	    		@Override
 	        public void handle(ActionEvent e) {
-	    			String textData = g1.getMondayHourLogger().getText();
-	            actiontarget.setFill(Color.FIREBRICK);
-	            actiontarget.setText(textData);
+	    		    //String textData = g1.getMondayHourLogger().getText();
+	            //actiontarget.setFill(Color.FIREBRICK);
+	            //actiontarget.setText(textData);
+
+                    // Check to see if values entered are numeric
+                    g1.loadWeeklyHours();
+                    if(ApplicationUtilities.isNumeric(g1.getWeeklyHoursList())) {
+                        g1.sumHours(g1.getWeeklyHoursList());
+                        // need to also submit hours as ints into db
+                    }
+                    else {
+                        System.out.println("could not submit data: hours must be in numeric format!");
+                    }
+
+
 	            System.out.println(g1.getMondayHourLogger().getText());
 	            getPropValues =new GetPropValues();
+
+	            /* Test to get print username and password from config file*/
 	            try {
 					System.out.println(getPropValues.getUserName());
 					System.out.println(getPropValues.getPassword());
@@ -149,10 +155,7 @@ public class Display extends Application {
 
 	        }
 	    });
-	    
 
-
-        
         BorderPane borderpane = new BorderPane();
         borderpane.setCenter(table);
         borderpane.setLeft(b1);
@@ -165,31 +168,15 @@ public class Display extends Application {
         window.setScene(scene);
         window.show();
     }
-    
-    
-    
-    
-    
-    
+
     //  Loads in data (usually gets data from csv or data on internet
     public ObservableList<GreenActivity> getActivity() {
-    	
     	
     		ObservableList<GreenActivity> activites = FXCollections.observableArrayList();
     		
     		g1 = new GreenActivity("Program Java code", 20, "coding");
-    	    g2 = new GreenActivity("Write FBI ScreenPlay ", 10, "Writing");
-    	    g3 = new GreenActivity("Read IBD", 30, "Saving Money");
-    	    g4 = new GreenActivity("Talk to girls", 50, "Dating");
-    	    g5 = new GreenActivity("Weigh 190 by Dec 22", 40, "body");
 
-    	
     		activites.add(g1);
-    		activites.add(g2);
-    		activites.add(g3);
-    		activites.add(g4);
-    		activites.add(g5);
-    		
     		
 		return activites;
     	

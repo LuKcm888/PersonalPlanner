@@ -1,13 +1,20 @@
 package com.lukcm888.planner;
 
+import java.util.ArrayList;
+
 public interface ActivityObject {	
 	
-	public String name ="";
-	public int hours = 0; 
-	public String category = "";
+	String name ="";
+	int hours = 0;
+	String category = "";
+    ArrayList <String> hoursPerDay = new ArrayList<String>();
 
-	public void writeData();
+	void writeData();
 	
-	public void readData();
+	void readData();
+
+    int sumHours(ArrayList <String> weeklyHoursList);
+
+
 	
 }
