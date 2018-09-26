@@ -1,11 +1,10 @@
 package com.lukcm888.planner;
 
-import java.io.IOException;
-
 import com.lukcm888.Util.ApplicationUtilities;
 import com.lukcm888.dataaccess.GetPropValues;
 
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,20 +13,23 @@ import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
-import javafx.scene.text.Text;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class Display extends Application {
 
-    private Stage window;
-    private final Text actiontarget  = new Text();;
-    private static Button b1;
+    private Stage primaryWindow;
+    private Stage addActivityWindow;
+    //private final Text actiontarget  = new Text();;
+    private static Button addActivityButton;
     private static Button submitButton;
     private static GridPane g;
-    
+
+    /* Primary Stage Constants */
     private static final String TASK = "Task";
     private static final String MONDAY = "Monday";
     private static final String TUESDAY = "Tuesday";
@@ -36,7 +38,7 @@ public class Display extends Application {
     private static final String FRIDAY = "Friday";
     private static final String SATURDAY = "Saturday";
     private static final String SUNDAY = "Sunday";
-    private static final String TOTALHOURS = "TotalHours";
+    private static final String TOTAL_HOURS = "TotalHours";
     private static final String NAME = "name";
     private static final String MONDAY_HOUR_LOGGER = "mondayHourLogger";
     private static final String TUESDAY_HOUR_LOGGER = "tuesdayHourLogger";
@@ -45,11 +47,30 @@ public class Display extends Application {
     private static final String FRIDAY_HOUR_LOGGER = "fridayHourLogger";
     private static final String SATURDAY_HOUR_LOGGER = "saturdayHourLogger";
     private static final String SUNDAY_HOUR_LOGGER = "sundayHourLogger";
-    
+    private static final String TOTAL_HOURS_LOGGER = "totalHoursLogger";
+
+    private static final String APP_TITLE = "Weekly Planner";
+
+
+    /* addActivityWindow Constants */
+
+    private static final String ADD_ACTIVITY_WINDOW_NAME = "Add New Activity";
+    private static final String ADD_ACTIVITY_BUTTON_NAME = "Add New Activity";
+    private static final String NEW_TASK_NAME = "newTaskName";
+    private static final String ADD_NEW_TASK = "Add New Task";
+
+    private static TextField newActivityTextField = new TextField();
+    private String newActivitySubmisson;
+    private Button newActivityButton;
+
     private static GreenActivity g1;
     
-    private static TableView<GreenActivity> table;
+    private static TableView<GreenActivity> weeklyTable;
     private static GetPropValues getPropValues;
+
+
+
+    private static ObservableList<GreenActivity> activites = FXCollections.observableArrayList();
     
    
     public static void main(String[] args) {
@@ -58,10 +79,10 @@ public class Display extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
-        window = primaryStage;      
-        window.setTitle("Weekly Planner");
+        primaryWindow = primaryStage;
+        primaryWindow.setTitle(APP_TITLE);
         
-        //	Monday Column
+        //	Name Column
         TableColumn<GreenActivity, String> taskColumn = new TableColumn<GreenActivity, String>(TASK);
         taskColumn.setMinWidth(200);
         taskColumn.setCellValueFactory(new PropertyValueFactory<>(NAME));
@@ -94,31 +115,62 @@ public class Display extends Application {
         //	Saturday Column
         TableColumn<GreenActivity, String> saturdayColumn = new TableColumn<GreenActivity, String>(SATURDAY);
         saturdayColumn.setMinWidth(200);
-        saturdayColumn.setCellValueFactory(new PropertyValueFactory<>(SATURDAY_HOUR_LOGGER ));
+        saturdayColumn.setCellValueFactory(new PropertyValueFactory<>(SATURDAY_HOUR_LOGGER));
         
         //  Sunday Column
         TableColumn<GreenActivity, String> sundayColumn = new TableColumn<GreenActivity, String>(SUNDAY);
         sundayColumn.setMinWidth(200);
         sundayColumn.setCellValueFactory(new PropertyValueFactory<>(SUNDAY_HOUR_LOGGER));
         
-     	//  TOTAL HOURS
-        TableColumn<GreenActivity, String> totalHoursColumn = new TableColumn<GreenActivity, String>(TOTALHOURS);
+     	//  Total Hours Column
+        TableColumn<GreenActivity, String> totalHoursColumn = new TableColumn<GreenActivity, String>(TOTAL_HOURS);
         totalHoursColumn.setMinWidth(200);
-        totalHoursColumn.setCellValueFactory(new PropertyValueFactory<>("name"));
+        totalHoursColumn.setCellValueFactory(new PropertyValueFactory<>(TOTAL_HOURS_LOGGER));
 
         
-        // instanite textfields
+        // instansiate textfields
         
-        table = new TableView<>();
-        table.setItems(getActivity());
+        weeklyTable = new TableView<>();
+
 
         
-        table.getColumns().addAll(taskColumn ,mondayColumn, tuesdayColumn, wednesdayColumn, thursdayColumn, 
+        weeklyTable.getColumns().addAll(taskColumn ,mondayColumn, tuesdayColumn, wednesdayColumn, thursdayColumn,
         		fridayColumn, saturdayColumn, sundayColumn);
         
      
-        b1 = new Button();
-        b1.setText("get new tasks");
+        addActivityButton = new Button();
+        addActivityButton.setText(ADD_ACTIVITY_BUTTON_NAME);
+        addActivityButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
+
+                addActivityWindow = new Stage();
+                addActivityWindow.setTitle(ADD_ACTIVITY_WINDOW_NAME);
+
+
+                newActivityButton = new Button(ADD_NEW_TASK);
+
+                GridPane addActivityWindowGridPane = new GridPane();
+                addActivityWindowGridPane.add(newActivityButton,0, 0);
+                addActivityWindowGridPane.add(newActivityTextField,1,0);
+                Scene addActivityWindowScene = new Scene(addActivityWindowGridPane);
+                addActivityWindow.setScene(addActivityWindowScene);
+
+                addActivityWindow.initModality(Modality.WINDOW_MODAL);
+                addActivityWindow.initOwner(primaryWindow);
+
+                addActivityWindow.setX(primaryWindow.getX()+ 500);
+                addActivityWindow.setY(primaryWindow.getY());
+
+                addActivityWindow.setOnHidden(e -> System.out.println("Window-level cleanup"));
+                addActivityWindow.show();
+
+
+                newActivityButton.setOnAction(new EventHandler<ActionEvent>() {
+                    @Override
+                    public void handle(ActionEvent event) {
+
+                        try {
 
         
 	    submitButton = new Button();
@@ -126,58 +178,74 @@ public class Display extends Application {
 	    submitButton.setOnAction(new EventHandler<ActionEvent> (){
 	    		@Override
 	        public void handle(ActionEvent e) {
-	    		    //String textData = g1.getMondayHourLogger().getText();
-	            //actiontarget.setFill(Color.FIREBRICK);
-	            //actiontarget.setText(textData);
+	    		    // String textData = g1.getMondayHourLogger().getText();
+                    // actiontarget.setFill(Color.FIREBRICK);
+	                // actiontarget.setText(textData);
+                    for (int i = 0; i < activites.size(); i ++) {
+                        // Check to see if values entered are numeric
 
-                    // Check to see if values entered are numeric
-                    g1.loadWeeklyHours();
-                    if(ApplicationUtilities.isNumeric(g1.getWeeklyHoursList())) {
-                        g1.sumHours(g1.getWeeklyHoursList());
-                        // need to also submit hours as ints into db
+                        GreenActivity tempActivity =  activites.get(i);
+                        tempActivity.loadWeeklyHours();
+                        if (ApplicationUtilities.isNumeric(tempActivity.getWeeklyHoursList())) {
+                            tempActivity.sumHours(tempActivity.getWeeklyHoursList());
+                            // need to also submit hours as ints into db
+                        } else {
+                            System.out.println("could not submit data: hours must be in numeric format!");
+                        }
+
+
+                        System.out.println(tempActivity.getMondayHourLogger().getText());
+                        System.out.println(tempActivity.getTuesdayHourLogger().getText());
+                        System.out.println(tempActivity.getWednesdayHourLogger().getText());
+                        System.out.println(tempActivity.getThursdayHourLogger().getText());
+                        System.out.println(tempActivity.getFridayHourLogger().getText());
+                        System.out.println(tempActivity.getSaturdayHourLogger().getText());
+                        System.out.println(tempActivity.getSundayHourLogger().getText());
+                        //getPropValues = new GetPropValues();
+
+                        /* Test to get print username and password from config file*/
+                        /*
+	                    try {
+					        System.out.println(getPropValues.getUserName());
+					        System.out.println(getPropValues.getPassword());
+				        } catch (IOException e1) {
+					        // TODO Auto-generated catch block
+					        e1.printStackTrace();
+				        }
+				    */
                     }
-                    else {
-                        System.out.println("could not submit data: hours must be in numeric format!");
-                    }
-
-
-	            System.out.println(g1.getMondayHourLogger().getText());
-	            getPropValues =new GetPropValues();
-
-	            /* Test to get print username and password from config file*/
-	            try {
-					System.out.println(getPropValues.getUserName());
-					System.out.println(getPropValues.getPassword());
-				} catch (IOException e1) {
-					// TODO Auto-generated catch block
-					e1.printStackTrace();
-				}
-
 	        }
 	    });
 
         BorderPane borderpane = new BorderPane();
-        borderpane.setCenter(table);
-        borderpane.setLeft(b1);
+        borderpane.setCenter(weeklyTable);
+        borderpane.setLeft(addActivityButton);
         
         borderpane.setBottom(submitButton);
          
         
         Scene scene = new Scene(borderpane);
 
-        window.setScene(scene);
-        window.show();
+        primaryWindow.setScene(scene);
+        primaryWindow.setOnHidden(e -> Platform.exit());
+        primaryWindow.show();
     }
 
     //  Loads in data (usually gets data from csv or data on internet
-    public ObservableList<GreenActivity> getActivity() {
+    public ObservableList<GreenActivity> getActivity(String name) {
     	
-    		ObservableList<GreenActivity> activites = FXCollections.observableArrayList();
-    		
-    		g1 = new GreenActivity("Program Java code", 20, "coding");
 
-    		activites.add(g1);
-    		
+
+    		//g1 = new GreenActivity(name, 20, "coding");
+
+    		activites.add(new GreenActivity(name, 20, "coding"));
+
+
+    		for (int i = 0; i < activites.size(); i++) {
+    		    System.out.println(activites.get(i));
+            }
+            System.out.println("Activites size is:" + activites.size());
+
 		return activites;
     	
     }
