@@ -24,12 +24,12 @@ public class Display extends Application {
 
     private Stage primaryWindow;
     private Stage addActivityWindow;
-    //private final Text actiontarget  = new Text();;
     private static Button addActivityButton;
     private static Button submitButton;
     private static GridPane g;
 
-    /* Primary Stage Constants */
+    /* Primary Stage Name Constants */
+    private static final String APP_TITLE = "Weekly Planner";
     private static final String TASK = "Task";
     private static final String MONDAY = "Monday";
     private static final String TUESDAY = "Tuesday";
@@ -39,6 +39,9 @@ public class Display extends Application {
     private static final String SATURDAY = "Saturday";
     private static final String SUNDAY = "Sunday";
     private static final String TOTAL_HOURS = "TotalHours";
+    private static final String REMOVE_BUTTON_NAME = "";
+
+    /* Primary Stage Data Constants */
     private static final String NAME = "name";
     private static final String MONDAY_HOUR_LOGGER = "mondayHourLogger";
     private static final String TUESDAY_HOUR_LOGGER = "tuesdayHourLogger";
@@ -48,31 +51,23 @@ public class Display extends Application {
     private static final String SATURDAY_HOUR_LOGGER = "saturdayHourLogger";
     private static final String SUNDAY_HOUR_LOGGER = "sundayHourLogger";
     private static final String TOTAL_HOURS_LOGGER = "totalHoursLogger";
-
-    private static final String APP_TITLE = "Weekly Planner";
-
+    private static final String REMOVE_BUTTON = "removeButton";
 
     /* addActivityWindow Constants */
-
     private static final String ADD_ACTIVITY_WINDOW_NAME = "Add New Activity";
     private static final String ADD_ACTIVITY_BUTTON_NAME = "Add New Activity";
     private static final String NEW_TASK_NAME = "newTaskName";
     private static final String ADD_NEW_TASK = "Add New Task";
-
-    private static TextField newActivityTextField = new TextField();
+    private TextField newActivityTextField = new TextField();
     private String newActivitySubmisson;
     private Button newActivityButton;
-
-    private static GreenActivity g1;
     
     private static TableView<GreenActivity> weeklyTable;
-    private static GetPropValues getPropValues;
-
-
+    //private static GetPropValues getPropValues;
 
     private static ObservableList<GreenActivity> activites = FXCollections.observableArrayList();
-    
-   
+
+
     public static void main(String[] args) {
         launch(args);
     }
@@ -84,62 +79,62 @@ public class Display extends Application {
         
         //	Name Column
         TableColumn<GreenActivity, String> taskColumn = new TableColumn<GreenActivity, String>(TASK);
-        taskColumn.setMinWidth(200);
+        taskColumn.setMinWidth(100);
         taskColumn.setCellValueFactory(new PropertyValueFactory<>(NAME));
        
         //	Monday Column
         TableColumn<GreenActivity, String> mondayColumn = new TableColumn<GreenActivity, String>(MONDAY);
-        mondayColumn.setMinWidth(200);
+        mondayColumn.setMinWidth(100);
         mondayColumn.setCellValueFactory(new PropertyValueFactory<>(MONDAY_HOUR_LOGGER));
         
         //	Tuesday Column
         TableColumn<GreenActivity, String> tuesdayColumn = new TableColumn<GreenActivity, String>(TUESDAY);
-        tuesdayColumn.setMinWidth(200);
+        tuesdayColumn.setMinWidth(100);
         tuesdayColumn.setCellValueFactory(new PropertyValueFactory<>(TUESDAY_HOUR_LOGGER));
         
         // Wednesday Column
         TableColumn<GreenActivity, String> wednesdayColumn = new TableColumn<GreenActivity, String>(WEDNESDAY);
-        wednesdayColumn.setMinWidth(200);
+        wednesdayColumn.setMinWidth(100);
         wednesdayColumn.setCellValueFactory(new PropertyValueFactory<>(WEDNESDAY_HOUR_LOGGER));
       
         //	Thursday Column
         TableColumn<GreenActivity, String> thursdayColumn = new TableColumn<GreenActivity, String>(THURSDAY);
-        thursdayColumn.setMinWidth(200);
+        thursdayColumn.setMinWidth(100);
         thursdayColumn.setCellValueFactory(new PropertyValueFactory<>(THURSDAY_HOUR_LOGGER));
         
         //	Friday Column
         TableColumn<GreenActivity, String> fridayColumn = new TableColumn<GreenActivity, String>(FRIDAY);
-        fridayColumn.setMinWidth(200);
+        fridayColumn.setMinWidth(100);
         fridayColumn.setCellValueFactory(new PropertyValueFactory<>(FRIDAY_HOUR_LOGGER));
         
         //	Saturday Column
         TableColumn<GreenActivity, String> saturdayColumn = new TableColumn<GreenActivity, String>(SATURDAY);
-        saturdayColumn.setMinWidth(200);
+        saturdayColumn.setMinWidth(100);
         saturdayColumn.setCellValueFactory(new PropertyValueFactory<>(SATURDAY_HOUR_LOGGER));
         
         //  Sunday Column
         TableColumn<GreenActivity, String> sundayColumn = new TableColumn<GreenActivity, String>(SUNDAY);
-        sundayColumn.setMinWidth(200);
+        sundayColumn.setMinWidth(100);
         sundayColumn.setCellValueFactory(new PropertyValueFactory<>(SUNDAY_HOUR_LOGGER));
         
      	//  Total Hours Column
         TableColumn<GreenActivity, String> totalHoursColumn = new TableColumn<GreenActivity, String>(TOTAL_HOURS);
-        totalHoursColumn.setMinWidth(200);
+        totalHoursColumn.setMinWidth(100);
         totalHoursColumn.setCellValueFactory(new PropertyValueFactory<>(TOTAL_HOURS_LOGGER));
 
-        
+        //  RemoveButton Column
+        TableColumn<GreenActivity, String> RemoveButtonColumn = new TableColumn<GreenActivity, String>(REMOVE_BUTTON_NAME);
+        totalHoursColumn.setMinWidth(100);
+        totalHoursColumn.setCellValueFactory(new PropertyValueFactory<>(REMOVE_BUTTON));
+
         // instansiate textfields
-        
         weeklyTable = new TableView<>();
 
-
-        
         weeklyTable.getColumns().addAll(taskColumn ,mondayColumn, tuesdayColumn, wednesdayColumn, thursdayColumn,
-        		fridayColumn, saturdayColumn, sundayColumn);
+        		fridayColumn, saturdayColumn, sundayColumn, RemoveButtonColumn);
         
      
-        addActivityButton = new Button();
-        addActivityButton.setText(ADD_ACTIVITY_BUTTON_NAME);
+        addActivityButton = new Button(ADD_ACTIVITY_BUTTON_NAME);
         addActivityButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
@@ -178,9 +173,8 @@ public class Display extends Application {
 	    submitButton.setOnAction(new EventHandler<ActionEvent> (){
 	    		@Override
 	        public void handle(ActionEvent e) {
-	    		    // String textData = g1.getMondayHourLogger().getText();
-                    // actiontarget.setFill(Color.FIREBRICK);
-	                // actiontarget.setText(textData);
+
+
                     for (int i = 0; i < activites.size(); i ++) {
                         // Check to see if values entered are numeric
 
@@ -233,10 +227,7 @@ public class Display extends Application {
 
     //  Loads in data (usually gets data from csv or data on internet
     public ObservableList<GreenActivity> getActivity(String name) {
-    	
 
-
-    		//g1 = new GreenActivity(name, 20, "coding");
 
     		activites.add(new GreenActivity(name, 20, "coding"));
 

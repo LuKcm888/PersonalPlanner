@@ -1,8 +1,8 @@
 package com.lukcm888.planner;
 
 import javafx.scene.control.TextField;
-
 import java.util.ArrayList;
+import javafx.scene.control.Button;
 
 public class GreenActivity implements ActivityObject {
 
@@ -19,6 +19,9 @@ public class GreenActivity implements ActivityObject {
 	private TextField fridayHourLogger;
 	private TextField saturdayHourLogger;
 	private TextField sundayHourLogger;
+	private Button removeButton;
+
+	private static final String REMOVE_BUTTON_NAME = "Remove";
 	
 	
 	
@@ -48,7 +51,9 @@ public class GreenActivity implements ActivityObject {
         saturdayHourLogger.setPromptText("0");
         
         sundayHourLogger = new TextField();
-        sundayHourLogger.setPromptText("0");		
+        sundayHourLogger.setPromptText("0");
+
+        removeButton = new Button(REMOVE_BUTTON_NAME);
 		
 	}
 	
@@ -67,10 +72,10 @@ public class GreenActivity implements ActivityObject {
 		this.fridayHourLogger = fridayHourLogger;
 		this.saturdayHourLogger = saturdayHourLogger;
 		this.sundayHourLogger = sundayHourLogger;
-		
-		
+
+        removeButton = new Button(REMOVE_BUTTON_NAME);
 	}
-	
+
 	public String getName() {
 		return name;
 	}
@@ -170,6 +175,14 @@ public class GreenActivity implements ActivityObject {
 
 	public void setSundayHourLogger(TextField sundayHourLogger) {
 		this.sundayHourLogger = sundayHourLogger;
+	}
+
+	public Button getRemoveButton() {
+	    return removeButton;
+	}
+
+	public void setRemoveButton(Button removeButton) {
+	    this.removeButton = removeButton;
 	}
 
 	@Override
