@@ -1,7 +1,6 @@
 package com.lukcm888.planner;
 
 import com.lukcm888.Util.ApplicationUtilities;
-import com.lukcm888.dataaccess.GetPropValues;
 
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -40,6 +39,7 @@ public class Display extends Application {
     private static final String SUNDAY = "Sunday";
     private static final String TOTAL_HOURS = "TotalHours";
     private static final String REMOVE_BUTTON_NAME = "";
+    private static final String SUBMIT_BUTTON_NAME = "Submit";
 
     /* Primary Stage Data Constants */
     private static final String NAME = "name";
@@ -65,7 +65,8 @@ public class Display extends Application {
     private static TableView<GreenActivity> weeklyTable;
     //private static GetPropValues getPropValues;
 
-    private static ObservableList<GreenActivity> activites = FXCollections.observableArrayList();
+
+    public static ObservableList<GreenActivity> activities = FXCollections.observableArrayList();
 
 
     public static void main(String[] args) {
@@ -124,8 +125,8 @@ public class Display extends Application {
 
         //  RemoveButton Column
         TableColumn<GreenActivity, String> RemoveButtonColumn = new TableColumn<GreenActivity, String>(REMOVE_BUTTON_NAME);
-        totalHoursColumn.setMinWidth(100);
-        totalHoursColumn.setCellValueFactory(new PropertyValueFactory<>(REMOVE_BUTTON));
+        RemoveButtonColumn.setMinWidth(100);
+        RemoveButtonColumn.setCellValueFactory(new PropertyValueFactory<>(REMOVE_BUTTON));
 
         // instansiate textfields
         weeklyTable = new TableView<>();
@@ -133,7 +134,20 @@ public class Display extends Application {
         weeklyTable.getColumns().addAll(taskColumn ,mondayColumn, tuesdayColumn, wednesdayColumn, thursdayColumn,
         		fridayColumn, saturdayColumn, sundayColumn, RemoveButtonColumn);
         
-     
+
+        /*
+        *   Add Activity Button Logic
+        *
+        *   When clicked, the add activity button will open a window that will prompt the user to add a new activity
+        *   to the calender.  This setOnAction also creates the window (currently called the "addActivityWindow")
+        *   Which generates the window and text bod that the user can enter their data into.
+        *
+        *   Also, the addActivityButton contains the setOnAction logic for the newActivityButton (the submit button for
+        *   the newActivityWindow.
+        *
+        *   TODO: Come up with better names for these variables.  The current ones are confusing and can be flushed out.
+        *
+        */
         addActivityButton = new Button(ADD_ACTIVITY_BUTTON_NAME);
         addActivityButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
@@ -169,16 +183,15 @@ public class Display extends Application {
 
         
 	    submitButton = new Button();
-	    submitButton.setText("Submit");
+	    submitButton.setText(SUBMIT_BUTTON_NAME);
 	    submitButton.setOnAction(new EventHandler<ActionEvent> (){
-	    		@Override
+	        @Override
 	        public void handle(ActionEvent e) {
 
-
-                    for (int i = 0; i < activites.size(); i ++) {
+                    for (int i = 0; i < activities.size(); i ++) {
                         // Check to see if values entered are numeric
 
-                        GreenActivity tempActivity =  activites.get(i);
+                        GreenActivity tempActivity =  activities.get(i);
                         tempActivity.loadWeeklyHours();
                         if (ApplicationUtilities.isNumeric(tempActivity.getWeeklyHoursList())) {
                             tempActivity.sumHours(tempActivity.getWeeklyHoursList());
@@ -211,6 +224,7 @@ public class Display extends Application {
 	        }
 	    });
 
+
         BorderPane borderpane = new BorderPane();
         borderpane.setCenter(weeklyTable);
         borderpane.setLeft(addActivityButton);
@@ -226,19 +240,50 @@ public class Display extends Application {
     }
 
     //  Loads in data (usually gets data from csv or data on internet
-    public ObservableList<GreenActivity> getActivity(String name) {
+    private ObservableList<GreenActivity> getActivity(String name) {
 
 
-    		activites.add(new GreenActivity(name, 20, "coding"));
 
 
-    		for (int i = 0; i < activites.size(); i++) {
-    		    System.out.println(activites.get(i));
+            System.out.println("Before adding new data");
+            for (int i = 0; i < activities.size(); i++) {
+                System.out.println("Name of Activity number " + i + " is " + activities.get(i).getName());
             }
-            System.out.println("Activites size is:" + activites.size());
 
-		return activites;
-    	
+            GreenActivity temp = new GreenActivity(name, 20, "coding");
+            // TODO: Figure out why the activities Obeservable Object is allowing enttites to be overwritten
+    		activities.add(temp);
+
+            System.out.println("AFTER adding new data");
+    		for (int i = 0; i < activities.size(); i++) {
+    		    System.out.println("Name of Activity number " + i + " is " + activities.get(i).getName());
+            }
+
+            System.out.println("ActivitiesList size is: " + activities.size());
+
+		return activities;
+
+    }
+
+
+    /*
+     *   Remove Button logic
+     *
+     *   Gives the user the ability to remove a recently added task completely from the calender
+     *
+     *
+     * */
+    private void removeItem() {
+
+
+    }
+
+    public ObservableList<GreenActivity> getActivities() {
+        return activities;
+    }
+
+    public void setActivities (ObservableList<GreenActivity> activities ) {
+        this.activities = activities;
     }
 
 
