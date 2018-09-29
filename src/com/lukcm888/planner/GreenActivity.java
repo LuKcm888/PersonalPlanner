@@ -1,16 +1,20 @@
 package com.lukcm888.planner;
 
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.scene.control.TextField;
 
-import java.util.ArrayList;
-import javafx.collections.ObservableList;
 
+import java.util.ArrayList;
 import javafx.scene.control.Button;
 import javafx.event.EventHandler;
 
 public class GreenActivity extends Activity {
 
+    /*
+    *  Constructor used to build new activity objects
+    *
+    * */
 
 	public GreenActivity(String name, int hours, String category) {
 		
@@ -40,14 +44,36 @@ public class GreenActivity extends Activity {
         sundayHourLogger = new TextField();
         sundayHourLogger.setPromptText("0");
 
+        GreenActivity thisGreenActivity = this;
         removeButton = new Button(REMOVE_BUTTON_NAME);
-        callRemoveButton(removeButton);
 
+        removeButton.setOnAction(new EventHandler<ActionEvent>() {
+            @Override
+            public void handle(ActionEvent event) {
 
+                ObservableList <GreenActivity> tempList = Driver.Display.getActivities();
+
+                for (int i = 0; i < tempList.size(); i++) {
+                    System.out.println(thisGreenActivity);
+                    System.out.println(tempList.get(i));
+
+                    if(thisGreenActivity == Driver.Display.getActivities().get(i)) {
+                        tempList.remove(thisGreenActivity);
+                    }
+                }
+
+            }
+
+        });
 
 		
 	}
-	
+
+	/*
+	*
+	*   Constructor used to populate data from database
+	*
+	* */
 	public GreenActivity(String name, int hours, String category, TextField mondayHourLogger, TextField tuesdayHourLogger
 			,TextField wednesdayHourLogger, TextField thursdayHourLogger, TextField fridayHourLogger, TextField saturdayHourLogger,
 			TextField sundayHourLogger) {
@@ -64,33 +90,8 @@ public class GreenActivity extends Activity {
 		this.saturdayHourLogger = saturdayHourLogger;
 		this.sundayHourLogger = sundayHourLogger;
 
-        removeButton = new Button(REMOVE_BUTTON_NAME);
 	}
 
-    @Override
-    public String callRemoveButton(Button removeButton) {
-
-        removeButton.setOnAction(new EventHandler<ActionEvent>() {
-            @Override
-            public void handle(ActionEvent event) {
-/*
-
-                ObservableList tempList = Display.getActivities();
-
-                String tempName = name;
-
-                for (int i = 0; i < tempList.size(); i++ ) {
-                        tempList.get(i);
-                }
-*/
-
-
-
-            }
-        });
-        return null;
-
-    }
 
 }
 

@@ -1,19 +1,18 @@
 package com.lukcm888.planner;
 
-import javafx.event.EventHandler;
+
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-
-import javafx.event.ActionEvent;
 import java.util.ArrayList;
+import javafx.collections.ObservableList;
 
 public abstract class Activity {
 
-	protected static String name ="";
-	protected static int hours = 0;
-	protected static String category = "";
-	protected static ArrayList <String> weeklyHoursList = new ArrayList<String>();
-	protected static final String REMOVE_BUTTON_NAME = "Remove";
+	protected String name ="";
+	protected int hours = 0;
+	protected String category = "";
+	protected ArrayList <String> weeklyHoursList = new ArrayList<String>();
+	protected final String REMOVE_BUTTON_NAME = "Remove";
 
 
     protected TextField mondayHourLogger;
@@ -123,10 +122,6 @@ public abstract class Activity {
         this.removeButton = removeButton;
     }
 
-
-    public abstract String callRemoveButton(Button removeButton);
-
-
     public void loadWeeklyHours() {
 
         weeklyHoursList.add(this.getMondayHourLogger().getText());
@@ -149,9 +144,5 @@ public abstract class Activity {
 		return totalHours;
 
 	}
-
-
-
-
 
 }
