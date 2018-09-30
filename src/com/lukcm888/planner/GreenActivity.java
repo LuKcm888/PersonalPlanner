@@ -19,7 +19,7 @@ public class GreenActivity extends Activity {
 	public GreenActivity(String name, int hours, String category) {
 		
 		this.name = name;
-		this.hours = hours;
+		this.totalHours = hours;
 		this.category = category;
 		weeklyHoursList = new ArrayList<String>();
 		
@@ -79,7 +79,7 @@ public class GreenActivity extends Activity {
 			TextField sundayHourLogger) {
 		
 		this.name = name;
-		this.hours = hours;
+		this.totalHours = hours;
 		this.category = category;
         weeklyHoursList = new ArrayList<String>();
 		this.mondayHourLogger = mondayHourLogger;

@@ -3,6 +3,7 @@ package com.lukcm888.planner;
 import com.lukcm888.Util.ApplicationUtilities;
 
 
+import com.lukcm888.dataaccess.DataBaseInteraction;
 import com.lukcm888.dataaccess.GetPropValues;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -22,6 +23,8 @@ import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
 
 public class Driver extends Application {
 
@@ -214,17 +217,23 @@ public class Driver extends Application {
 	        @Override
 	        public void handle(ActionEvent e) {
 
-                    for (int i = 0; i < Display.activities.size(); i ++) {
-                        // Check to see if values entered are numeric
+                ArrayList<GreenActivity> sqlGreenAcitivityList = new ArrayList<GreenActivity>();
 
-                        GreenActivity tempActivity =  Display.activities.get(i);
-                        tempActivity.loadWeeklyHours();
-                        if (ApplicationUtilities.isNumeric(tempActivity.getWeeklyHoursList())) {
-                            tempActivity.sumHours(tempActivity.getWeeklyHoursList());
-                            // need to also submit hours as ints into db
-                        } else {
-                            System.out.println("could not submit data: hours must be in numeric format!");
-                        }
+	            for (int i = 0; i < Display.activities.size(); i ++) {
+
+	                // Check to see if values entered are numeric
+                    GreenActivity tempActivity =  Display.activities.get(i);
+                    tempActivity.loadWeeklyHours();
+                    if (ApplicationUtilities.isNumeric(tempActivity.getWeeklyHoursList())) {
+                        tempActivity.sumHours(tempActivity.getWeeklyHoursList());
+
+                        sqlGreenAcitivityList.add(tempActivity);
+
+
+
+                    } else {
+                        System.out.println("could not submit data: totalHours must be in numeric format!");
+                    }
 
                         System.out.println(tempActivity.getMondayHourLogger().getText());
                         System.out.println(tempActivity.getTuesdayHourLogger().getText());
@@ -234,19 +243,23 @@ public class Driver extends Application {
                         System.out.println(tempActivity.getSaturdayHourLogger().getText());
                         System.out.println(tempActivity.getSundayHourLogger().getText());
                         Display.getPropValues = new GetPropValues();
-
                         /* Test to get print username and password from config file*/
-
-	                    try {
-					        System.out.println(Display.getPropValues.getUserName());
-					        System.out.println(Display.getPropValues.getPassword());
-				        } catch (IOException e1) {
-					        // TODO Auto-generated catch block
-					        e1.printStackTrace();
-				        }
-
                     }
-	        }
+
+
+                try {
+                    //System.out.println(Display.getPropValues.getUserName());
+                    //System.out.println(Display.getPropValues.getPassword());
+                    DataBaseInteraction db = new DataBaseInteraction();
+
+                    db.insertHours(sqlGreenAcitivityList);
+
+                } catch (Exception e1) {
+                    // TODO Auto-generated catch block
+                    e1.printStackTrace();
+                }
+
+            }
 	    });
 
 
