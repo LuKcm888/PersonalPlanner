@@ -38,6 +38,7 @@ public class GetPropValues {
 			String propFileName = "config.properties";
  
 			inputStream = getClass().getClassLoader().getResourceAsStream(propFileName);
+			System.out.println("InputStream value is ["+inputStream+"]");
  
 			if (inputStream != null) {
 				prop.load(inputStream);

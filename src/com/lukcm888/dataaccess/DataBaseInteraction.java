@@ -6,8 +6,8 @@ import java.sql.*;
 public class DataBaseInteraction {
 	
 	// Removed for securty purposes
-	static final String JDBC_DRIVER = "org.gjt.mm.mysql.Drivers";
-	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306";
+	static final String JDBC_DRIVER = "";
+	static final String DB_URL = "";
 
 	/*
 	   Logs the total hours recorded by the user for each task into

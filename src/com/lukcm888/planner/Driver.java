@@ -2,6 +2,8 @@ package com.lukcm888.planner;
 
 import com.lukcm888.Util.ApplicationUtilities;
 
+
+import com.lukcm888.dataaccess.GetPropValues;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -18,6 +20,8 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
+
+import java.io.IOException;
 
 public class Driver extends Application {
 
@@ -66,7 +70,7 @@ public class Driver extends Application {
 
 
         private static TableView<GreenActivity> weeklyTable = new TableView<>();
-        //private static GetPropValues getPropValues;
+        private static GetPropValues getPropValues;
 
 
         private static ObservableList<GreenActivity> activities = FXCollections.observableArrayList();
@@ -229,18 +233,18 @@ public class Driver extends Application {
                         System.out.println(tempActivity.getFridayHourLogger().getText());
                         System.out.println(tempActivity.getSaturdayHourLogger().getText());
                         System.out.println(tempActivity.getSundayHourLogger().getText());
-                        //getPropValues = new GetPropValues();
+                        Display.getPropValues = new GetPropValues();
 
                         /* Test to get print username and password from config file*/
-                        /*
+
 	                    try {
-					        System.out.println(getPropValues.getUserName());
-					        System.out.println(getPropValues.getPassword());
+					        System.out.println(Display.getPropValues.getUserName());
+					        System.out.println(Display.getPropValues.getPassword());
 				        } catch (IOException e1) {
 					        // TODO Auto-generated catch block
 					        e1.printStackTrace();
 				        }
-				    */
+
                     }
 	        }
 	    });
