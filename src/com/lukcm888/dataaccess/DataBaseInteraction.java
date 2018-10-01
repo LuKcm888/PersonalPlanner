@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 public class DataBaseInteraction {
 
-	static final String JDBC_DRIVER = "";
-	static final String DB_URL = "";
+	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
+	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=EST";
 
-	private static String USER ="";
-	private static String PASS ="";
+	private static String USER ="lukcm888";
+	private static String PASS ="HailtoTheking888";
 
 	/*
 	   Logs the total totalHours recorded by the user for each task into
@@ -57,7 +57,7 @@ public class DataBaseInteraction {
 
                 System.out.println(mon);
 
-                sql = "INSERT INTO saved_data (task, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES " +
+                sql = "INSERT IGNORE INTO saved_data (task, monday, tuesday, wednesday, thursday, friday, saturday, sunday) VALUES " +
                         "('"+ name +"',"+ mon +","+ tues +","+ wed +","+ thur +","+ fri +","+ sat +","+ sun +")";
                 s.executeUpdate(sql);
 
