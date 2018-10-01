@@ -10,7 +10,7 @@ import java.util.ArrayList;
 
 public class DataBaseInteraction {
 
-	static final String JDBC_DRIVER = "";
+	static final String JDBC_DRIVER = " ";
 	static final String DB_URL = "";
 
 	private static String USER ="";
