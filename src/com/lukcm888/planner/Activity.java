@@ -4,12 +4,11 @@ package com.lukcm888.planner;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
 import java.util.ArrayList;
-import javafx.collections.ObservableList;
 
 public abstract class Activity {
 
 	protected String name ="";
-	protected int hours = 0;
+	protected int totalHours = 0;
 	protected String category = "";
 	protected ArrayList <String> weeklyHoursList = new ArrayList<String>();
 	protected final String REMOVE_BUTTON_NAME = "Remove";
@@ -33,12 +32,12 @@ public abstract class Activity {
         this.name = name;
     }
 
-    public int getHours() {
-        return hours;
+    public int getTotalHours() {
+        return totalHours;
     }
 
-    public void setHours(int hours) {
-        this.hours = hours;
+    public void setTotalHours(int totalHours) {
+        this.totalHours = totalHours;
     }
 
     public String getCategory() {
@@ -134,14 +133,14 @@ public abstract class Activity {
 
     }
 
-	public int sumHours(ArrayList <String> weeklyHoursList) {
-		int totalHours = 0;
+	public void sumHours(ArrayList <String> weeklyHoursList) {
+		int total = 0;
 		for (String hour: weeklyHoursList) {
 
-			totalHours += Integer.parseInt(hour);
+			total += Integer.parseInt(hour);
 		}
 
-		return totalHours;
+		totalHours = total;
 
 	}
 
