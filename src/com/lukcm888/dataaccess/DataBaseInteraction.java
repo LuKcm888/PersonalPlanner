@@ -10,11 +10,11 @@ import java.util.ArrayList;
 
 public class DataBaseInteraction {
 
-	static final String JDBC_DRIVER = "com.mysql.jdbc.Driver";
-	static final String DB_URL = "jdbc:mysql://127.0.0.1:3306/test?useUnicode=true&useJDBCCompliantTimezoneShift=true&useLegacyDatetimeCode=false&serverTimezone=EST";
+	static final String JDBC_DRIVER = "";
+	static final String DB_URL = "";
 
-	private static String USER ="lukcm888";
-	private static String PASS ="HailtoTheking888";
+	private static String USER ="";
+	private static String PASS ="";
 
 	/*
 	   Logs the total totalHours recorded by the user for each task into
