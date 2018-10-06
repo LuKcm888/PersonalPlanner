@@ -3,7 +3,7 @@ package com.lukcm888.planner;
 import com.lukcm888.Util.ApplicationUtilities;
 import java.util.logging.Logger;
 
-import com.lukcm888.dataaccess.DataBaseInteraction;
+import com.lukcm888.dataaccess.DataBaseHandler;
 import com.lukcm888.dataaccess.GetPropValues;
 import javafx.application.Application;
 import javafx.application.Platform;
@@ -306,7 +306,7 @@ public class Driver extends Application {
                 try {
                     //System.out.println(Display.getPropValues.getUserName());
                     //System.out.println(Display.getPropValues.getPassword());
-                    DataBaseInteraction db = new DataBaseInteraction();
+                    DataBaseHandler db = new DataBaseHandler();
 
                     db.insertHours(sqlGreenAcitivityList);
 
