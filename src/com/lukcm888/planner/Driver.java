@@ -1,7 +1,7 @@
 package com.lukcm888.planner;
 
 import com.lukcm888.Util.ApplicationUtilities;
-
+import java.util.logging.Logger;
 
 import com.lukcm888.dataaccess.DataBaseInteraction;
 import com.lukcm888.dataaccess.GetPropValues;
@@ -19,6 +19,7 @@ import javafx.scene.control.TextField;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.GridPane;
+import javafx.scene.text.Text;
 import javafx.stage.Modality;
 import javafx.stage.Stage;
 
@@ -26,7 +27,8 @@ import java.util.ArrayList;
 
 public class Driver extends Application {
 
-    //TODO: Implement a logger for debugging!
+    private static final Logger LOGGER = Logger.getLogger(Driver.class.getName());
+    private static final String CLASSNAME = Driver.class.getName();
 
     public static class Display {
 
@@ -34,16 +36,17 @@ public class Driver extends Application {
         private static GridPane liw_gridPane;
         private static TextField liw_UsernameTextField;
         private static TextField liw_PasswordTextField;
-        private static Button liw_SubmitButton;
+        private static Text liw_MainText = new Text("Enter in Credentials to login");
+        private static Text liw_UserNameText = new Text("Username");
+        private static Text liw_PasswordText = new Text("Password");
 
+        private static Button liw_SubmitButton;
 
         private static Stage primaryWindow;
         private static Stage addActivityWindow;
         private static Button pw_AddActivityButton;
         private static Button pw_SubmitButton;
         private static BorderPane pw_BorderPane;
-
-
 
         /* Primary Stage Name Constants */
         private static final String PW_APP_TITLE = "Weekly Planner";
@@ -105,18 +108,29 @@ public class Driver extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
+        LOGGER.info(CLASSNAME +".start():  Entering method.");
 
+        LOGGER.info(CLASSNAME +".start():  Setting up login window.");
+
+        // Execute code to create login window
         Display.loginInWindow = primaryStage;
         Display.loginInWindow.setTitle(Display.PW_APP_TITLE);
         Display.liw_gridPane = new GridPane();
-
         Display.liw_UsernameTextField = new TextField();
         Display.liw_PasswordTextField = new TextField();
+        Display.loginInWindow.setHeight(175);
+        Display.loginInWindow.setWidth(300);
 
+        Display.liw_gridPane.setPrefWidth(500);
+        Display.liw_gridPane.setPrefHeight(500);
         Display.liw_SubmitButton = new Button("Submit Credentials");
-        Display.liw_gridPane.add(Display.liw_UsernameTextField, 0, 0);
-        Display.liw_gridPane.add(Display.liw_PasswordTextField, 0, 1);
-        Display.liw_gridPane.add(Display.liw_SubmitButton, 0, 2);
+        Display.liw_gridPane.add(Display.liw_MainText, 0, 0);
+        Display.liw_gridPane.add(Display.liw_UserNameText, 0, 1);
+        Display.liw_gridPane.add(Display.liw_UsernameTextField, 1, 1);
+        Display.liw_gridPane.add(Display.liw_PasswordText, 0, 2);
+        Display.liw_gridPane.add(Display.liw_PasswordTextField, 1, 2);
+        Display.liw_gridPane.add(Display.liw_SubmitButton, 0, 3);
+        // add dyanmic text to display if login failed
         Scene liw_WindowScene = new Scene(Display.liw_gridPane);
         Display.loginInWindow.setScene(liw_WindowScene);
 
@@ -126,35 +140,37 @@ public class Driver extends Application {
         Display.liw_SubmitButton.setOnAction(new EventHandler<ActionEvent>() {
             @Override
             public void handle(ActionEvent event) {
+                LOGGER.info(CLASSNAME +".start():  Inside liw_SubmitButton handle function.");
 
                 try {
 
                     if (("admin").equalsIgnoreCase(Display.liw_UsernameTextField.getText()) &&
                             ("password").equalsIgnoreCase(Display.liw_PasswordTextField.getText())) {
 
+                        LOGGER.info(CLASSNAME +".start():  Exiting method.");
                         runMainWindow(primaryStage);
 
                         Display.liw_UsernameTextField.clear();
                         Display.liw_PasswordTextField.clear();
                     } else {
-                        System.out.println("Empty string");
+                        LOGGER.info(CLASSNAME +".start(): Invalid login.");
                     }
 
                 } catch (Exception e) {
-                    System.out.println("An exception occured when trying to add a new" +
-                            " activity to the schduele");
+
+                    LOGGER.info(CLASSNAME +".start(): \"An exception occured when trying to add a new\" +\n" +
+                            "                            \" activity to the schduele\"");
                 }
             }
         });
 
 
-
-    }
+    } // End of start()
 
 
     public void runMainWindow(Stage primaryStage) {
 
-        System.out.println("running main window");
+        LOGGER.info(CLASSNAME+".runMainWindow(): Entering Method");
         Display.primaryWindow = primaryStage;
         Display.primaryWindow.setTitle(Display.PW_APP_TITLE);
 
@@ -313,7 +329,8 @@ public class Driver extends Application {
         Display.primaryWindow.setScene(scene);
         Display.primaryWindow.setOnHidden(e -> Platform.exit());
         Display.primaryWindow.show();
-    }
+
+    } // End of runMainWindow()
 
 
     public void runAddAcitivityWindow() {
@@ -369,7 +386,7 @@ public class Driver extends Application {
 
 
 
-    }
+    } // End of runAddAcitivityWindow()
 
     public ObservableList<GreenActivity> getActivities() {
         return Display.activities;
