@@ -47,6 +47,7 @@ public class Driver extends Application {
         private static Button pw_AddActivityButton;
         private static Button pw_SubmitButton;
         private static BorderPane pw_BorderPane;
+        private static GridPane pw_GridPane;
 
         /* Primary Stage Name Constants */
         private static final String PW_APP_TITLE = "Weekly Planner";
@@ -61,6 +62,7 @@ public class Driver extends Application {
         private static final String TOTAL_HOURS = "TotalHours";
         private static final String REMOVE_BUTTON_NAME = "";
         private static final String SUBMIT_BUTTON_NAME = "Submit";
+
 
         /* Primary Stage Data Constants */
         private static final String NAME = "name";
@@ -80,6 +82,19 @@ public class Driver extends Application {
         private static final String ADD_NEW_TASK = "Add New Task";
         private static final TextField aaw_newActivityTextField = new TextField();
         private static Button aaw_NewActivityButton;
+
+        /* loadPreviousData */
+
+        private static final String LOAD_DATA_WINDOW_NAME = "Data from last week";
+        private static final String LOAD_DATA_BUTTON_NAME = "Data from last week";
+        private static final String GET_DATA = "Get Data";
+        /* add drop data for date range */
+
+        private static Button ld_Get_Data;
+
+
+        /* seeActivityStats */
+
 
 
         private static TableView<GreenActivity> pw_WeeklyTable = new TableView<>();
@@ -143,6 +158,7 @@ public class Driver extends Application {
                 LOGGER.info(CLASSNAME +".start():  Inside liw_SubmitButton handle function.");
 
                 try {
+
 
                     if (("admin").equalsIgnoreCase(Display.liw_UsernameTextField.getText()) &&
                             ("password").equalsIgnoreCase(Display.liw_PasswordTextField.getText())) {
@@ -260,6 +276,9 @@ public class Driver extends Application {
         });
 
 
+        Display.ld_Get_Data = new Button(Display.GET_DATA);
+
+
         /*
          *   Submit Button logic:
          *
@@ -319,8 +338,14 @@ public class Driver extends Application {
         });
 
         Display.pw_BorderPane = new BorderPane();
+        Display.pw_GridPane = new GridPane();
         Display.pw_BorderPane.setCenter(Display.pw_WeeklyTable);
-        Display.pw_BorderPane.setLeft(Display.pw_AddActivityButton);
+
+        Display.pw_GridPane = new GridPane();
+        Display.pw_GridPane.add(Display.pw_AddActivityButton, 0, 0);
+        Display.pw_GridPane.add(Display.ld_Get_Data, 0, 1);
+
+        Display.pw_BorderPane.setLeft(Display.pw_GridPane);
 
         Display.pw_BorderPane.setBottom(Display.pw_SubmitButton);
 
@@ -334,7 +359,7 @@ public class Driver extends Application {
 
 
     public void runAddAcitivityWindow() {
-
+        LOGGER.info(CLASSNAME+".runAddAcitivityWindow(): Entering Method");
         Display.addActivityWindow = new Stage();
         Display.addActivityWindow.setTitle(Display.ADD_ACTIVITY_WINDOW_NAME);
 
@@ -384,7 +409,7 @@ public class Driver extends Application {
             }
         });
 
-
+        LOGGER.info(CLASSNAME+".runAddAcitivityWindow(): Exiting Method");
 
     } // End of runAddAcitivityWindow()
 

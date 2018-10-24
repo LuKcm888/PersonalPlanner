@@ -3,7 +3,10 @@ package com.lukcm888.dataaccess;
 import com.lukcm888.planner.GreenActivity;
 
 
-import java.sql.*;
+import java.sql.Connection;
+import java.sql.Statement;
+import java.sql.DriverManager;
+import java.sql.SQLException;
 import java.util.ArrayList;
 
 
@@ -20,8 +23,9 @@ public class DataBaseHandler {
        Logs the total totalHours recorded by the user for each task into
        the database.
      */
-    public void insertHours(ArrayList<GreenActivity> sqlGreenAcitivityList) {
+    public void insertHours(ArrayList<GreenActivity> sqlGreenActivityList) {
 
+        //TODO: Change statment to preparedStatement
         Connection connection = null;
         Statement s = null;
         try {
@@ -37,14 +41,14 @@ public class DataBaseHandler {
 
 
             System.out.println("About to execute for loop");
-            for (int i = 0; i < sqlGreenAcitivityList.size(); i ++ ) {
+            for (int i = 0; i < sqlGreenActivityList.size(); i ++ ) {
 
                 System.out.println("Inserting records into the table...");
                 s = connection.createStatement();
                 String sql = "USE test";
                 s.executeUpdate(sql);
 
-                GreenActivity activity = sqlGreenAcitivityList.get(i);
+                GreenActivity activity = sqlGreenActivityList.get(i);
 
                 String name = activity.getName();
                 int mon = Integer.parseInt(activity.getMondayHourLogger().getText());

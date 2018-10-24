@@ -1,11 +1,13 @@
 package com.lukcm888.user;
 
-import java.sql.Date;
+
+import java.sql.Timestamp;
+import java.util.Date;
 import java.util.UUID;
 
 public class User {
 
-    private String uniqueId;
+    private String userId;
     private int sqlId;
     private String firstName;
     private String lastName;
@@ -26,13 +28,15 @@ public class User {
     }*/
 
 
-    public User(String firstName, String lastName,Date creationDate, String userName, String userLoginPassword,
+    public User(String firstName, String lastName, String userName, String userLoginPassword,
                 String email, String street, String city, int zip, int phoneNumber) {
 
-        uniqueId = UUID.randomUUID().toString();
+        Date date = new Date();
+
+        userId = UUID.randomUUID().toString();
         this.firstName = firstName;
         this.lastName = lastName;
-        this.creationDate = creationDate;
+        this.creationDate = new Timestamp(date.getTime());
         this.userName = userName;
         this.userLoginPassword = userLoginPassword;
         this.email = email;
@@ -43,12 +47,12 @@ public class User {
 
     }
 
-    public String getUniqueId() {
-        return uniqueId;
+    public String getUserId() {
+        return userId;
     }
 
-    public void setUniqueId(String uniqueId) {
-        this.uniqueId = uniqueId;
+    public void setUserId(String userId) {
+        this.userId = userId;
     }
 
     public int getSqlId() {
