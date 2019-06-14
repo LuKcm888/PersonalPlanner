@@ -1,7 +1,7 @@
-package com.lukcm888.dataaccess;
+package com.lukcm888.dataaccess.service;
 
-import com.lukcm888.planner.GreenActivity;
 
+import com.lukcm888.dataaccess.dao.GreenActivity;
 
 import java.sql.Connection;
 import java.sql.Statement;
@@ -23,6 +23,13 @@ public class DataBaseHandler {
        Logs the total totalHours recorded by the user for each task into
        the database.
      */
+
+
+
+
+
+
+
     public void insertHours(ArrayList<GreenActivity> sqlGreenActivityList) {
 
         //TODO: Change statment to preparedStatement

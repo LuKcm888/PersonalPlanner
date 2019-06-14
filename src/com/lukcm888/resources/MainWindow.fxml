@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+<?import com.lukcm888.dataaccess.dao.GreenActivity?>
+
+
+<GridPane fx:controller="com.lukcm888.java.controllers.MainWindowController"
+          xmlns:fx="http://javafx.com/fxml" alignment="center" hgap="10" vgap="10">
+    <padding>
+        <Insets top="25" right="25" bottom="10" left="25"/>
+    </padding>
+
+    <Label style="-fx-font: NORMAL 20 Tahoma;" text="Address Book" GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+
+
+    <TableView fx:id="tableView" GridPane.columnIndex="0" GridPane.rowIndex="1">
+        <columns>
+            <TableColumn text="First Name">
+            </TableColumn>
+            <TableColumn text="Last Name">
+            </TableColumn>
+            <TableColumn text="Email Address">
+            </TableColumn>
+        </columns>
+        <items>
+            <FXCollections fx:factory="observableArrayList">
+                <Person firstName="Jacob" lastName="Smith"
+                        email="jacob.smith@example.com"/>
+                <Person firstName="Isabella" lastName="Johnson"
+                        email="isabella.johnson@example.com"/>
+                <Person firstName="Ethan" lastName="Williams"
+                        email="ethan.williams@example.com"/>
+                <Person firstName="Emma" lastName="Jones"
+                        email="emma.jones@example.com"/>
+                <Person firstName="Michael" lastName="Brown"
+                        email="michael.brown@example.com"/>
+            </FXCollections>
+        </items>
+    </TableView>
+
+
+    <Text text="Activities" GridPane.columnIndex="1" GridPane.rowIndex="0" GridPane.columnSpan="2"/>
+
+
+    <HBox spacing="10" alignment="bottom_left" GridPane.columnIndex="1" GridPane.rowIndex="4">
+        <Button text="Add New Activity" onAction="#handleAddActivityButtonAction"/>
+    </HBox>
+
+    <Text fx:id="actiontarget"
+      GridPane.columnIndex="1" GridPane.rowIndex="6"/>
+
+</GridPane>

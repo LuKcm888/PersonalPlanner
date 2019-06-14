@@ -1,4 +1,4 @@
-package com.lukcm888.dataaccess;
+package com.lukcm888.dataaccess.service;
 
 import java.io.FileNotFoundException;
 import java.io.IOException;

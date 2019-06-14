@@ -1,4 +1,4 @@
-package com.lukcm888.dataaccess;
+package com.lukcm888.dataaccess.dao;
 
 import java.sql.Connection;
 import java.sql.Statement;

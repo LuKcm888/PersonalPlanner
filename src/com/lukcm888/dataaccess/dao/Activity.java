@@ -1,4 +1,4 @@
-package com.lukcm888.planner;
+package com.lukcm888.dataaccess.dao;
 
 
 import javafx.scene.control.Button;
@@ -124,7 +124,7 @@ public abstract class Activity {
     public void loadWeeklyHours() {
 
         weeklyHoursList.add(this.getMondayHourLogger().getText());
-        weeklyHoursList.add( this.getTuesdayHourLogger().getText());
+        weeklyHoursList.add(this.getTuesdayHourLogger().getText());
         weeklyHoursList.add(this.getWednesdayHourLogger().getText());
         weeklyHoursList.add(this.getThursdayHourLogger().getText());
         weeklyHoursList.add(this.getFridayHourLogger().getText());
